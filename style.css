@@ -1,0 +1,71 @@
+.tab-pane {
+    padding-top: 10px;
+}
+
+.editor {
+    overflow: auto;
+}
+
+.editor .offset {
+    float: left;
+    padding: 0px 10px;
+    background: #f7f7f7;
+    color: #777;
+    text-align: right;
+    font-family: 'Source Code Pro','Courier New',Consolas,Menlo,'PT Mono','Liberation Mono',monospace;
+    font-size: 14px;
+    line-height: 18px;
+    cursor: default;
+}
+
+.editor .offset div {
+    padding-bottom: 1px;
+}
+
+.editor .hex {
+    float: left;
+    padding: 0px 10px;
+    line-height: 18px;
+    font-size: 14px;
+}
+
+.editor div {
+    display: block;
+}
+
+.editor span {
+    font-family: 'Source Code Pro','Courier New',Consolas,Menlo,'PT Mono','Liberation Mono',monospace;
+    font-size: 14px;
+    line-height: 18px;
+    cursor: default;
+    display: inline-block;
+    white-space: pre;
+}
+
+.editor .hex span:hover {
+    background: #dae4ea;
+}
+
+.editor .hex span.cursor{
+    background-color: #d3d3d3;
+    animation: blink-cursor 1s infinite;
+    margin-bottom: -1px;
+    border-bottom: transparent solid 1px;
+}
+
+@keyframes blink-cursor {
+    50% {border-bottom: 1px solid #000;}
+}
+
+.eitor .hex span.cursor.blink {
+    box-shadow: inset 0 -4px 0 -2px rgba(0,0,0,0.5);
+}
+
+.editor .map {
+    float: left;
+    padding: 0px 10px;
+    line-height: 18px;
+    font-size: 14px;
+    color: #777777;
+    background: #f7f7f7;
+}

@@ -1,0 +1,17 @@
+{
+  "name": "promgrammer",
+  "version": "0.1.0",
+  "description": "An EEPROM programmer",
+  "main": "main.js",
+  "dependencies": {
+    "bootstrap": "^3.3.5",
+    "jquery": "^2.1.4",
+    "serialport": "^1.7.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "electron ."
+  },
+  "author": "Javier Rizzo",
+  "license": "MIT"
+}
