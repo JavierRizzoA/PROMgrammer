@@ -15,8 +15,9 @@ app.on('ready', function() {
     mainWindow = new BrowserWindow({width: 800, height: 600, "web-preferences": {"overlay-scrollbars": true}});
     mainWindow.loadUrl('file://' + __dirname + '/index.html');
     mainWindow.setMenuBarVisibility(false);
-
+    mainWindow.setMinimumSize(800, 350);
     mainWindow.on('closed', function() {
         mainWindow = null;
     });
 });
+

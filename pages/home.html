@@ -1,163 +1,36 @@
-<div class="col-xs-2 col-md-1">
-  <div id="toolbar" class="btn-group-vertical btn-group-lg btn-block" role="group">
-    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="New hex file"><span class="glyphicon glyphicon-plus"></span></button>
-    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Save hex file"><span class="glyphicon glyphicon-floppy-disk"></span></button>
-    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Open hex file"><span class="glyphicon glyphicon-folder-open"></span></button>
-    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Erase EEPROM"><span class="glyphicon glyphicon-erase"></span></button>
-    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Write to EEPROM"><span class="glyphicon glyphicon-save"></span></button>
+<div class="container-fluid">
+  <div class="row">
+    <div id="toolbar"class="col-xs-2 col-md-1">
+      <div class="btn-group-vertical btn-group-lg btn-block" role="group">
+        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="New hex file">
+          <span class="glyphicon glyphicon-plus"></span>
+        </button>
+        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Save hex file">
+          <span class="glyphicon glyphicon-floppy-disk"></span>
+        </button>
+        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Open hex file">
+          <span class="glyphicon glyphicon-folder-open"></span>
+        </button>
+        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Erase EEPROM">
+          <span class="glyphicon glyphicon-erase"></span>
+        </button>
+        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Write to EEPROM">
+          <span class="glyphicon glyphicon-save"></span>
+        </button>
+      </div>
+    </div>
+    <div class="col-xs-10 col-md-11">
+      <div id="editor" class="editor">
+        <div id="offset" class="offset">
+        </div>
+        <div id="hex" class="hex">
+        </div>
+        <div id="map" class="map">
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-<div class="col-xs-10 col-md-11">
-  <div class="editor">
-    <div class="offset">
-      <div data-offset="0">0x0000</div>
-      <div data-offset="16">0x0010</div>
-      <div data-offset="32">0x0020</div>
-      <div data-offset="64">0x0030</div>
-    </div>
-    <div class="hex">
-      <span data-offset="0" class="">00</span>
-      <span data-offset="1" class="">00</span>
-      <span data-offset="2" class="">00</span>
-      <span data-offset="3" class="">00</span>
-      <span data-offset="4" class="">00</span>
-      <span data-offset="5" class="">00</span>
-      <span data-offset="6" class="">00</span>
-      <span data-offset="7" class="">00</span>
-      &nbsp;
-      <span data-offset="8" class="cursor">00</span>
-      <span data-offset="9" class="">00</span>
-      <span data-offset="10" class="">00</span>
-      <span data-offset="11" class="">00</span>
-      <span data-offset="12" class="">00</span>
-      <span data-offset="13" class="">00</span>
-      <span data-offset="14" class="">00</span>
-      <span data-offset="15" class="">00</span>
-      <br>
-      <span data-offset="0" class="">00</span>
-      <span data-offset="1" class="">00</span>
-      <span data-offset="2" class="">00</span>
-      <span data-offset="3" class="">00</span>
-      <span data-offset="4" class="">00</span>
-      <span data-offset="5" class="">00</span>
-      <span data-offset="6" class="">00</span>
-      <span data-offset="7" class="">00</span>
-      &nbsp;
-      <span data-offset="8" class="">00</span>
-      <span data-offset="9" class="">00</span>
-      <span data-offset="10" class="">00</span>
-      <span data-offset="11" class="">00</span>
-      <span data-offset="12" class="">00</span>
-      <span data-offset="13" class="">00</span>
-      <span data-offset="14" class="">00</span>
-      <span data-offset="15" class="">00</span>
-      <br>
-      <span data-offset="0" class="">00</span>
-      <span data-offset="1" class="">00</span>
-      <span data-offset="2" class="">00</span>
-      <span data-offset="3" class="">00</span>
-      <span data-offset="4" class="">00</span>
-      <span data-offset="5" class="">00</span>
-      <span data-offset="6" class="">00</span>
-      <span data-offset="7" class="">00</span>
-      &nbsp;
-      <span data-offset="8" class="">00</span>
-      <span data-offset="9" class="">00</span>
-      <span data-offset="10" class="">00</span>
-      <span data-offset="11" class="">00</span>
-      <span data-offset="12" class="">00</span>
-      <span data-offset="13" class="">00</span>
-      <span data-offset="14" class="">00</span>
-      <span data-offset="15" class="">00</span>
-      <br>
-      <span data-offset="0" class="">00</span>
-      <span data-offset="1" class="">00</span>
-      <span data-offset="2" class="">00</span>
-      <span data-offset="3" class="">00</span>
-      <span data-offset="4" class="">00</span>
-      <span data-offset="5" class="">00</span>
-      <span data-offset="6" class="">00</span>
-      <span data-offset="7" class="">00</span>
-      &nbsp;
-      <span data-offset="8" class="">00</span>
-      <span data-offset="9" class="">00</span>
-      <span data-offset="10" class="">00</span>
-      <span data-offset="11" class="">00</span>
-      <span data-offset="12" class="">00</span>
-      <span data-offset="13" class="">00</span>
-      <span data-offset="14" class="">00</span>
-      <span data-offset="15" class="">00</span>
-      <br>
-    </div>
-    <div class="map">
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <br>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <br>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>A</span>
-      <span>a</span>
-      <br>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-      <br>
-    </div>
+  <div class="row" style="background: #808080; height: 25px;">
+    <span>Statusbar</span>
   </div>
 </div>
