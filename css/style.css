@@ -5,6 +5,12 @@
 .editor {
     overflow: auto;
     margin-bottom: 10px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .editor .offset {
@@ -48,19 +54,18 @@
     background: #dae4ea;
 }
 
-.editor span.byte.cursor, .editor span.charByte.cursor{
+.editor span.byte.selected, .editor span.charByte.selected {
     background-color: #d3d3d3;
-    animation: blink-cursor 1s infinite;
     margin-bottom: -1px;
+}
+
+.editor span.byte.cursor, .editor span.charByte.cursor{
+    animation: blink-cursor 1s infinite;
     border-bottom: transparent solid 1px;
 }
 
 @keyframes blink-cursor {
     50% {border-bottom: 1px solid #000;}
-}
-
-.editor .hex span.cursor.blink {
-    box-shadow: inset 0 -4px 0 -2px rgba(0,0,0,0.5);
 }
 
 .editor .hex span.separation {
@@ -74,10 +79,10 @@
 
 #toolbar {
     overflow: hidden;
-    height: 513;
+    height: 515;
 }
 
 #editor {
     overflow-y: scroll;
-    height: 513;
+    height: 518;
 }
