@@ -3,8 +3,10 @@
 }
 
 .editor {
-    overflow: auto;
     margin-bottom: 10px;
+}
+
+body {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;

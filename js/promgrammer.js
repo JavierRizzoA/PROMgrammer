@@ -15,8 +15,9 @@ PROMGRAMMER.bytes = [];
  * Which byte is being edited.
  * b = the number of the byte being edited (-1 being none).
  * hex = wether it is being edited in hex mode (true) or map mode (false).
+ * charsEntered = the number of chars entered to the byte.
  */
-PROMGRAMMER.editing = {b: -1, hex: true};
+PROMGRAMMER.selection = {b: 0, hex: true, charsEntered: 0};
 
 /**
  * @function
@@ -53,7 +54,7 @@ PROMGRAMMER.byteToChar = function(b) {
  * @function
  * Convers a decimal number to hexadecimal.
  * @param {number} dec - The number to convert.
- * @param {number} digits - The minimum number of digits for the result; it adds 0s to the left if the number is smaller (0 by default).
+ * @param {number} digits - The minimum number of digits for the result; it adds 0s to the left if the number is smaller (0 by default, no preceding 0s).
  * @param {boolean} prefix - Wether or not to add '0x' at the left (false by default).
  * @returns {string} The hexadecimal representation of the decimal number.
  */
@@ -73,5 +74,5 @@ PROMGRAMMER.decToHex = function(dec, digits, prefix) {
  */
 $(window).load(function() {
     PROMGRAMMER.bytes = PROMGRAMMER.newFile(PROMGRAMMER.addresses);
-    PROMGRAMMER.displayBytes(PROMGRAMMER.bytes);
+    PROMGRAMMER.displayBytes(PROMGRAMMER.bytes, PROMGRAMMER.selection);
 });

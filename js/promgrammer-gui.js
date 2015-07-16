@@ -1,29 +1,117 @@
 var PROMGRAMMER = PROMGRAMMER || {};
 
 /*
- * To do when the window is resized.
+ * How many characters have been entered while editing the same byte.
+ */
+PROMGRAMMER.charsEntered = 0;
+
+/*
+ * Window resize event handler.
  */
 $(window).resize(function(){
     $('#editor').css('height', $(window).height() - 82);
     $('#toolbar').css('height', $(window).height() - 82);
 });
 
+/*
+ * Keypress (a character was entered) event handler.
+ */
+$(document).keypress(function(event) {
+    PROMGRAMMER.editByte(PROMGRAMMER.bytes, PROMGRAMMER.selection, event.which);
+});
+
+/*
+ * Keydown (a key was pressed, character or not) event handler.
+ */
+$(document).keydown(function(event) {
+    //TODO
+    if(event.which === 32) {
+        event.preventDefault();
+        PROMGRAMMER.editByte(PROMGRAMMER.bytes, PROMGRAMMER.selection, 32);
+    } else if(event.which === 38) {
+        if(PROMGRAMMER.selection.b - 16 >= 0) PROMGRAMMER.selectByte(PROMGRAMMER.selection.b - 16, PROMGRAMMER.selection.hex, PROMGRAMMER.selection);
+        event.preventDefault();
+    } else if(event.which === 40) {
+        if(PROMGRAMMER.selection.b + 16 < PROMGRAMMER.bytes.length) PROMGRAMMER.selectByte(PROMGRAMMER.selection.b + 16, PROMGRAMMER.selection.hex, PROMGRAMMER.selection);
+        event.preventDefault();
+    } else if(event.which === 37) {
+        if(PROMGRAMMER.selection.b - 1 >= 0) PROMGRAMMER.selectByte(PROMGRAMMER.selection.b - 1, PROMGRAMMER.selection.hex, PROMGRAMMER.selection);
+        event.preventDefault();
+    } else if(event.which === 39) {
+        if(PROMGRAMMER.selection.b + 1 < PROMGRAMMER.bytes.length) PROMGRAMMER.selectByte(PROMGRAMMER.selection.b + 1, PROMGRAMMER.selection.hex, PROMGRAMMER.selection);
+        event.preventDefault();
+    }
+});
+
+/**
+ * @function
+ * Scrolls the editor if the cursor leaves the visible screen.
+ * @param {Object} selectedByte - The currently selected byte.
+ * @param {number} selectedByte.b - The byte number.
+ * @param {boolean} selectedByte.hex - Wether the the selected byte is on the hex editor (true) or the character map (false).
+ * @param {number} selectedByte.charsEntered - The number of chars entered to the byte.
+ * */
+PROMGRAMMER.scrollEditor = function(selection) {
+    if(Math.floor(($('#editor').height() + $('#editor').scrollTop()) / 19) < Math.floor(selection.b / 16) + 1) {
+        $('#editor').scrollTop(Math.ceil(19*(selection.b / 16 + 1) - $('#editor').height() + 1));
+    } else if(Math.floor($('#editor').scrollTop() / 19 + 1) > selection.b / 16) {
+        $('#editor').scrollTop((19*Math.floor(selection.b / 16) - 1));
+    }
+};
+
+/**
+ * @function
+ * Edits the selected byte.
+ * @param {number[]} bytes - The byte array.
+ * @param {Object} selectedByte - The currently selected byte.
+ * @param {number} selectedByte.b - The byte number.
+ * @param {boolean} selectedByte.hex - Wether the the selected byte is on the hex editor (true) or the character map (false).
+ * @param {number} selectedByte.charsEntered - The number of chars entered to the byte.
+ * @param {number} charCode - The entered character code.
+ */
+PROMGRAMMER.editByte = function(bytes, selectedByte, charCode) {
+    if(selectedByte.hex) {
+        if((event.which >= 48 && event.which <= 57) || (event.which >= 97 && event.which <= 102) || (event.which >= 65 && event.which <= 70)) {
+            bytes[selectedByte.b] = parseInt(PROMGRAMMER.decToHex(bytes[selectedByte.b], 2, false).charAt(1) + String.fromCharCode(charCode), 16);
+            selectedByte.charsEntered++;
+        }
+    } else {
+        bytes[selectedByte.b] = charCode;
+        selectedByte.charsEntered = 2;
+    }
+    $('span.byte[data-byte="' + selectedByte.b + '"]').html(PROMGRAMMER.decToHex(bytes[selectedByte.b], 2, false));
+    $('span.charByte[data-byte="' + selectedByte.b + '"]').html(PROMGRAMMER.byteToChar(bytes[selectedByte.b]));
+
+    if(selectedByte.charsEntered === 2) {
+        if(selectedByte.b < bytes.length - 1) {
+            PROMGRAMMER.selectByte(selectedByte.b + 1, selectedByte.hex, selectedByte);
+        } else {
+            selectedByte.charsEntered = 0;
+        }
+    }
+};
+
 /**
  * @funciton
  * Loads an array of bytes to the editor.
  * @param {number[]} bytes - The array of bytes to load.
+ * @param {Object} selectedByte - The currently selected byte.
+ * @param {number} selectedByte.b - The byte number.
+ * @param {boolean} selectedByte.hex - Wether the the selected byte is on the hex editor (true) or the character map (false).
+ * @param {number} selectedByte.charsEntered - The number of chars entered to the byte.
  * @todo Remove all children from the editor first.
  */
-PROMGRAMMER.displayBytes = function(bytes) {
+PROMGRAMMER.displayBytes = function(bytes, selectedByte) {
     var offset = 0;
     for(i = 0; i < bytes.length; i++) {
         if( i > 0) {
-            $('<span class="byte" data-byte="' + i + '" onclick="PROMGRAMMER.editing = PROMGRAMMER.selectByte(' + i + ', true, PROMGRAMMER.editing)">' + PROMGRAMMER.decToHex(bytes[i], 2) + '</span>').appendTo('#hex');
-            $('<span class="charByte" data-byte="' + i + '" onclick="PROMGRAMMER.editing = PROMGRAMMER.selectByte(' + i + ', false, PROMGRAMMER.editing)">' + PROMGRAMMER.byteToChar(bytes[i]) + '</span>').appendTo('#map');
+            $('<span class="byte" data-byte="' + i + '" onclick="PROMGRAMMER.selectByte(' + i + ', true, PROMGRAMMER.selection)">' + PROMGRAMMER.decToHex(bytes[i], 2) + '</span>').appendTo('#hex');
+            $('<span class="charByte" data-byte="' + i + '" onclick="PROMGRAMMER.selectByte(' + i + ', false, PROMGRAMMER.selection)">' + PROMGRAMMER.byteToChar(bytes[i]) + '</span>').appendTo('#map');
         } else {
-            $('<span class="byte selected cursor" data-byte="' + i + '" onclick="PROMGRAMMER.editing = PROMGRAMMER.selectByte(' + i + ', true, PROMGRAMMER.editing)">' + PROMGRAMMER.decToHex(bytes[i], 2) + '</span>').appendTo('#hex');
-            $('<span class="charByte selected" data-byte="' + i + '" onclick="PROMGRAMMER.editing = PROMGRAMMER.selectByte(' + i + ', false, PROMGRAMMER.editing)">' + PROMGRAMMER.byteToChar(bytes[i]) + '</span>').appendTo('#map');
-            this.editing = {b: 0, hex: true};
+            $('<span class="byte selected cursor" data-byte="' + i + '" onclick="PROMGRAMMER.selectByte(' + i + ', true, PROMGRAMMER.selection)">' + PROMGRAMMER.decToHex(bytes[i], 2) + '</span>').appendTo('#hex');
+            $('<span class="charByte selected" data-byte="' + i + '" onclick="PROMGRAMMER.selectByte(' + i + ', false, PROMGRAMMER.selection)">' + PROMGRAMMER.byteToChar(bytes[i]) + '</span>').appendTo('#map');
+            selectedByte.b = 0;
+            selectedByte.hex = true;
         }
         if((i + 1) % 16 == 1) {
             $('<div>' + PROMGRAMMER.decToHex(offset, 4, true) + '</div>').appendTo('#offset');
@@ -45,9 +133,8 @@ PROMGRAMMER.displayBytes = function(bytes) {
  * @param {Object} previouSelection - The previously selected byte.
  * @param {number} previousSelection.b - The byte number.
  * @param {boolean} previousSelection.hex - Wether the the selection was on the hex editor (true) or the character map (false).
- * @returns {Object} newSelection - The new selected byte.
- * @returns {number} newSelection.b - The new selected byte number.
- * @returns {boolean} newSelection.hex - Wether the new selection is on the hex editor (true) or the character map (false).
+ * @param {number} previousSelection.charsEntered - The number of chars entered to the byte.
+ * @TODO Scroll if the byte is out of view.
  */
 PROMGRAMMER.selectByte = function(b, hex, previousSelection) {
     /*
@@ -72,5 +159,11 @@ PROMGRAMMER.selectByte = function(b, hex, previousSelection) {
         $('span.charByte[data-byte="' + b + '"]').toggleClass("selected cursor");
     }
 
-    return {b: b, hex: hex};
+    /*
+     * Update the selection.
+     */
+    previousSelection.b = b;
+    previousSelection.hex = hex;
+    previousSelection.charsEntered = 0;
+    PROMGRAMMER.scrollEditor(previousSelection);
 };
