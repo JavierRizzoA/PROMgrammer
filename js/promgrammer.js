@@ -19,6 +19,10 @@ PROMGRAMMER.bytes = [];
  */
 PROMGRAMMER.selection = {b: 0, hex: true, charsEntered: 0};
 
+PROMGRAMMER.serialPort = require('serialport');
+
+PROMGRAMMER.ports = [];
+
 /**
  * @function
  * Creates a new array of bytes.
@@ -69,10 +73,27 @@ PROMGRAMMER.decToHex = function(dec, digits, prefix) {
     if(prefix) return "0x" + hex; else return hex;
 };
 
+PROMGRAMMER.listPorts = function(err, ports) {
+    PROMGRAMMER.ports = [];
+    $('#portList').empty();
+    if(typeof ports !== 'undefined') {
+        ports.forEach(function(port) {
+            PROMGRAMMER.ports.push(port.comName);
+            $('<option>' + port.comName + '</option>').appendTo('#portList');
+        });
+    } else {
+        PROMGRAMMER.ports.push("No serial ports available");
+        $('<option>' + "No serial ports available" + '</option>').appendTo('#portList');
+    }
+};
+
 /*
  * To do when the window finishes loading.
  */
 $(window).load(function() {
     PROMGRAMMER.bytes = PROMGRAMMER.newFile(PROMGRAMMER.addresses);
     PROMGRAMMER.displayBytes(PROMGRAMMER.bytes, PROMGRAMMER.selection);
+    PROMGRAMMER.serialPort.list(PROMGRAMMER.listPorts);
 });
+
+

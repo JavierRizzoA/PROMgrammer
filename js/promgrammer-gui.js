@@ -102,6 +102,9 @@ PROMGRAMMER.editByte = function(bytes, selectedByte, charCode) {
  * @todo Remove all children from the editor first.
  */
 PROMGRAMMER.displayBytes = function(bytes, selectedByte) {
+    $('#map').empty();
+    $('#hex').empty();
+    $('#offset').empty();
     var offset = 0;
     for(i = 0; i < bytes.length; i++) {
         if( i > 0) {
@@ -167,3 +170,4 @@ PROMGRAMMER.selectByte = function(b, hex, previousSelection) {
     previousSelection.charsEntered = 0;
     PROMGRAMMER.scrollEditor(previousSelection);
 };
+
