@@ -23,6 +23,10 @@ PROMGRAMMER.serialPort = require('serialport');
 
 PROMGRAMMER.ports = [];
 
+PROMGRAMMER.remote = require('remote');
+
+PROMGRAMMER.dialog = PROMGRAMMER.remote.require('dialog');
+
 /**
  * @function
  * Creates a new array of bytes.
@@ -87,6 +91,36 @@ PROMGRAMMER.listPorts = function(err, ports) {
     }
 };
 
+/**
+ * @function
+ * Converts the array of bytes to a string.
+ * @param {number[]} - The array of bytes.
+ * @returns {string} The string of bytes.
+ */
+PROMGRAMMER.bytesToString = function(bytes) {
+    var str = "";
+    for(c in bytes) {
+        str += String.fromCharCode(bytes[c]);
+    }
+    return str;
+};
+
+/**
+ * @function
+ * Writes the data to a file 'filename'.
+ * @param {string} filename - The file to write.
+ * @param {string} data - The data to write.
+ * @TODO Handle exceptions.
+ */
+PROMGRAMMER.writeFile = function(filename, data) {
+    fs = require('fs');
+    fs.writeFile(filename, data);
+};
+
+PROMGRAMMER.saveDialogCallback = function(filename) {
+    PROMGRAMMER.writeFile(filename, PROMGRAMMER.bytesToString(PROMGRAMMER.bytes));
+};
+
 /*
  * To do when the window finishes loading.
  */
@@ -95,5 +129,3 @@ $(window).load(function() {
     PROMGRAMMER.displayBytes(PROMGRAMMER.bytes, PROMGRAMMER.selection);
     PROMGRAMMER.serialPort.list(PROMGRAMMER.listPorts);
 });
-
-
