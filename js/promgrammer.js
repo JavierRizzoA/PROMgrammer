@@ -77,20 +77,6 @@ PROMGRAMMER.decToHex = function(dec, digits, prefix) {
     if(prefix) return "0x" + hex; else return hex;
 };
 
-PROMGRAMMER.listPorts = function(err, ports) {
-    PROMGRAMMER.ports = [];
-    $('#portList').empty();
-    if(typeof ports !== 'undefined') {
-        ports.forEach(function(port) {
-            PROMGRAMMER.ports.push(port.comName);
-            $('<option>' + port.comName + '</option>').appendTo('#portList');
-        });
-    } else {
-        PROMGRAMMER.ports.push("No serial ports available");
-        $('<option>' + "No serial ports available" + '</option>').appendTo('#portList');
-    }
-};
-
 /**
  * @function
  * Converts the array of bytes to a string.
@@ -115,10 +101,6 @@ PROMGRAMMER.bytesToString = function(bytes) {
 PROMGRAMMER.writeFile = function(filename, data) {
     fs = require('fs');
     fs.writeFile(filename, data);
-};
-
-PROMGRAMMER.saveDialogCallback = function(filename) {
-    PROMGRAMMER.writeFile(filename, PROMGRAMMER.bytesToString(PROMGRAMMER.bytes));
 };
 
 /*

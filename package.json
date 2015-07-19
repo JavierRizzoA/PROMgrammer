@@ -5,6 +5,7 @@
   "main": "main.js",
   "dependencies": {
     "bootstrap": "^3.3.5",
+    "fs-plus": "^2.8.1",
     "jquery": "^2.1.4",
     "serialport": "^1.7.4"
   },

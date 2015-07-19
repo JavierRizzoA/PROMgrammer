@@ -171,3 +171,35 @@ PROMGRAMMER.selectByte = function(b, hex, previousSelection) {
     PROMGRAMMER.scrollEditor(previousSelection);
 };
 
+/**
+ * Callback for the PROMGRAMMER.serialPort.list function.
+ */
+PROMGRAMMER.listPorts = function(err, ports) {
+    PROMGRAMMER.ports = [];
+    $('#portList').empty();
+    if(typeof ports !== 'undefined') {
+        ports.forEach(function(port) {
+            PROMGRAMMER.ports.push(port.comName);
+            $('<option>' + port.comName + '</option>').appendTo('#portList');
+        });
+    } else {
+        PROMGRAMMER.ports.push("No serial ports available");
+        $('<option>' + "No serial ports available" + '</option>').appendTo('#portList');
+    }
+};
+
+/**
+ * @function
+ * This function is called by the Save File button.
+ */
+PROMGRAMMER.saveFileButton = function() {
+    PROMGRAMMER.writeFile(
+            PROMGRAMMER.dialog.showSaveDialog(PROMGRAMMER.remote.getCurrentWindow(),
+                {
+                    title: "Save Hex File As...",
+                    defaultPath: require('path').join(require('fs-plus').getHomeDirectory(), "ROM.bin")
+                }
+            ), 
+            PROMGRAMMER.bytesToString(PROMGRAMMER.bytes)
+    );
+};
