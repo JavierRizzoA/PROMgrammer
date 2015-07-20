@@ -93,15 +93,16 @@ PROMGRAMMER.editByte = function(bytes, selectedByte, charCode) {
 
 /**
  * @funciton
- * Loads an array of bytes to the editor.
+ * Loads an array of bytes to the editor, waiting first for the array to be completely filled.
  * @param {number[]} bytes - The array of bytes to load.
  * @param {Object} selectedByte - The currently selected byte.
  * @param {number} selectedByte.b - The byte number.
  * @param {boolean} selectedByte.hex - Wether the the selected byte is on the hex editor (true) or the character map (false).
  * @param {number} selectedByte.charsEntered - The number of chars entered to the byte.
- * @todo Remove all children from the editor first.
+ * @param {number} addresses - The length the array should have.
  */
-PROMGRAMMER.displayBytes = function(bytes, selectedByte) {
+PROMGRAMMER.displayBytes = function(bytes, selectedByte, addresses) {
+    var timeout = setInterval(function() {if(bytes.length === addresses) {clearInterval(timeout); isFinished = true;}}, 100);
     $('#map').empty();
     $('#hex').empty();
     $('#offset').empty();
@@ -194,12 +195,38 @@ PROMGRAMMER.listPorts = function(err, ports) {
  */
 PROMGRAMMER.saveFileButton = function() {
     PROMGRAMMER.writeFile(
-            PROMGRAMMER.dialog.showSaveDialog(PROMGRAMMER.remote.getCurrentWindow(),
-                {
-                    title: "Save Hex File As...",
-                    defaultPath: require('path').join(require('fs-plus').getHomeDirectory(), "ROM.bin")
+        PROMGRAMMER.dialog.showSaveDialog(PROMGRAMMER.remote.getCurrentWindow(),
+            {
+                title: "Save Hex File As...",
+                defaultPath: require('path').join(require('fs-plus').getHomeDirectory(), "ROM.bin")
+            }
+        ), 
+        PROMGRAMMER.bytesToString(PROMGRAMMER.bytes)
+    );
+};
+
+/**
+ * @function
+ * This function is called by the Open File buton.
+ */
+PROMGRAMMER.openFileButton = function() {
+    PROMGRAMMER.dialog.showOpenDialog(
+        PROMGRAMMER.remote.getCurrentWindow(),
+        {
+            title: "Open Hex File...",
+            defaultPath: require('path').join(require('fs-plus').getHomeDirectory()),
+            properties: ['openFile']
+        },
+        function(filenames) {
+            var fs = require('fs');
+            fs.readFile(
+                filenames[0],
+                {},
+                function(err, data) {
+                    PROMGRAMMER.bytes = PROMGRAMMER.stringToBytes(data.toString(), PROMGRAMMER.addresses, 0);
+                    PROMGRAMMER.displayBytes(PROMGRAMMER.bytes, PROMGRAMMER.selection, PROMGRAMMER.addresses);
                 }
-            ), 
-            PROMGRAMMER.bytesToString(PROMGRAMMER.bytes)
+            );
+        }
     );
 };

@@ -80,7 +80,7 @@ PROMGRAMMER.decToHex = function(dec, digits, prefix) {
 /**
  * @function
  * Converts the array of bytes to a string.
- * @param {number[]} - The array of bytes.
+ * @param {number[]} bytes - The array of bytes.
  * @returns {string} The string of bytes.
  */
 PROMGRAMMER.bytesToString = function(bytes) {
@@ -89,6 +89,32 @@ PROMGRAMMER.bytesToString = function(bytes) {
         str += String.fromCharCode(bytes[c]);
     }
     return str;
+};
+
+/**
+ * @function
+ * Converts the string to an array of bytes.
+ * @param {string} str - The string to convert.
+ * @param {number} addresses - The number of addresses of the EEPROM (and thus, the length of the array of bytes).
+ * @param {number} defaultValue - The default value to add to the array if str is smaller. 0 by default.
+ * @returns {number[]} The array of bytes.
+ */
+PROMGRAMMER.stringToBytes = function(str, addresses, defaultValue) {
+    defaultValue = typeof defaultValue !== 'undefined' ? defaultValue : 0;
+    var bytes = [];
+    if(str.length < addresses) {
+        for(i = 0; i < str.length; i++) {
+            bytes.push(str.charCodeAt(i));
+        }
+        for(i = 0; i < addresses - str.length; i++) {
+            bytes.push(defaultValue);
+        }
+    } else {
+        for(i = 0; i < addresses; i++) {
+            bytes.push(str.charCodeAt(i));
+        }
+    }
+    return bytes;
 };
 
 /**
@@ -103,11 +129,23 @@ PROMGRAMMER.writeFile = function(filename, data) {
     fs.writeFile(filename, data);
 };
 
+/**
+ * @function
+ * Reads a file.
+ * @param {string} filename - The file to read.
+ * @returns {string} The contents of the file.
+ * @TODO Handle exceptions.
+ */
+PROMGRAMMER.readFile = function(filename) {
+    fs = require('fs');
+    return fs.readFileSync(filename);
+};
+
 /*
  * To do when the window finishes loading.
  */
 $(window).load(function() {
     PROMGRAMMER.bytes = PROMGRAMMER.newFile(PROMGRAMMER.addresses);
-    PROMGRAMMER.displayBytes(PROMGRAMMER.bytes, PROMGRAMMER.selection);
+    PROMGRAMMER.displayBytes(PROMGRAMMER.bytes, PROMGRAMMER.selection, PROMGRAMMER.addresses);
     PROMGRAMMER.serialPort.list(PROMGRAMMER.listPorts);
 });
