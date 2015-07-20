@@ -27,6 +27,8 @@ PROMGRAMMER.remote = require('remote');
 
 PROMGRAMMER.dialog = PROMGRAMMER.remote.require('dialog');
 
+PROMGRAMMER.romTypes = ['28C64'];
+
 /**
  * @function
  * Creates a new array of bytes.
@@ -148,5 +150,6 @@ $(window).load(function() {
     PROMGRAMMER.setStatusMessage('Welcome to PROMgrammer.');
     PROMGRAMMER.bytes = PROMGRAMMER.newFile(PROMGRAMMER.addresses);
     PROMGRAMMER.displayBytes(PROMGRAMMER.bytes, PROMGRAMMER.selection, PROMGRAMMER.addresses);
+    PROMGRAMMER.romTypes.forEach(function(rom) {$('<option>' + rom + '</option>').appendTo('#romTypeList')});
     PROMGRAMMER.serialPort.list(PROMGRAMMER.listPorts);
 });

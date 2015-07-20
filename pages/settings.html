@@ -3,7 +3,7 @@
   <h3>EEPROM</h3>
   <form class="form-horizontal">
     <div class="form-group">
-      <label for="port" class="col-xs-3 control-label">Seiral Port</label>
+      <label for="portList" class="col-xs-3 control-label">Seiral Port</label>
       <div class="col-xs-5">
         <select id="portList" class="form-control">
         </select>
@@ -12,6 +12,15 @@
         <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Refresh" onclick="PROMGRAMMER.serialPort.list(PROMGRAMMER.listPorts);">
           <span class="glyphicon glyphicon-refresh"></span>
         </button>
+      </div>
+    </div>
+  </form>
+  <form class="form-horizontal">
+    <div class="form-group">
+      <label for="romTypeList" class="col-xs-3 control-label">EEPROM Type</label>
+      <div class="col-xs-5">
+        <select id="romTypeList" class="form-control">
+        </select>
       </div>
     </div>
   </form>
