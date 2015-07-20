@@ -145,6 +145,7 @@ PROMGRAMMER.readFile = function(filename) {
  * To do when the window finishes loading.
  */
 $(window).load(function() {
+    PROMGRAMMER.setStatusMessage('Welcome to PROMgrammer.');
     PROMGRAMMER.bytes = PROMGRAMMER.newFile(PROMGRAMMER.addresses);
     PROMGRAMMER.displayBytes(PROMGRAMMER.bytes, PROMGRAMMER.selection, PROMGRAMMER.addresses);
     PROMGRAMMER.serialPort.list(PROMGRAMMER.listPorts);

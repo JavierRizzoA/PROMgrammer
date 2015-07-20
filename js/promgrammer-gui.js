@@ -114,8 +114,7 @@ PROMGRAMMER.displayBytes = function(bytes, selectedByte, addresses) {
         } else {
             $('<span class="byte selected cursor" data-byte="' + i + '" onclick="PROMGRAMMER.selectByte(' + i + ', true, PROMGRAMMER.selection)">' + PROMGRAMMER.decToHex(bytes[i], 2) + '</span>').appendTo('#hex');
             $('<span class="charByte selected" data-byte="' + i + '" onclick="PROMGRAMMER.selectByte(' + i + ', false, PROMGRAMMER.selection)">' + PROMGRAMMER.byteToChar(bytes[i]) + '</span>').appendTo('#map');
-            selectedByte.b = 0;
-            selectedByte.hex = true;
+            PROMGRAMMER.selectByte(0, true, selectedByte);
         }
         if((i + 1) % 16 == 1) {
             $('<div>' + PROMGRAMMER.decToHex(offset, 4, true) + '</div>').appendTo('#offset');
@@ -170,6 +169,7 @@ PROMGRAMMER.selectByte = function(b, hex, previousSelection) {
     previousSelection.hex = hex;
     previousSelection.charsEntered = 0;
     PROMGRAMMER.scrollEditor(previousSelection);
+    PROMGRAMMER.updateStatusSelection(previousSelection);
 };
 
 /**
@@ -191,9 +191,21 @@ PROMGRAMMER.listPorts = function(err, ports) {
 
 /**
  * @function
+ * This function is called by the New File button.
+ */
+PROMGRAMMER.newFileButton = function() {
+    PROMGRAMMER.setStatusMessage('Creating new file...');
+    PROMGRAMMER.bytes = PROMGRAMMER.newFile(PROMGRAMMER.addresses);
+    PROMGRAMMER.displayBytes(PROMGRAMMER.bytes, PROMGRAMMER.selection, PROMGRAMMER.addresses);
+    PROMGRAMMER.setStatusMessage('New file created.');
+};
+
+/**
+ * @function
  * This function is called by the Save File button.
  */
 PROMGRAMMER.saveFileButton = function() {
+    PROMGRAMMER.setStatusMessage('Saving file...');
     PROMGRAMMER.writeFile(
         PROMGRAMMER.dialog.showSaveDialog(PROMGRAMMER.remote.getCurrentWindow(),
             {
@@ -203,6 +215,7 @@ PROMGRAMMER.saveFileButton = function() {
         ), 
         PROMGRAMMER.bytesToString(PROMGRAMMER.bytes)
     );
+    PROMGRAMMER.setStatusMessage('File saved.');
 };
 
 /**
@@ -210,6 +223,7 @@ PROMGRAMMER.saveFileButton = function() {
  * This function is called by the Open File buton.
  */
 PROMGRAMMER.openFileButton = function() {
+    PROMGRAMMER.setStatusMessage('Reading file...');
     PROMGRAMMER.dialog.showOpenDialog(
         PROMGRAMMER.remote.getCurrentWindow(),
         {
@@ -229,4 +243,25 @@ PROMGRAMMER.openFileButton = function() {
             );
         }
     );
+    PROMGRAMMER.setStatusMessage('File read.');
+};
+
+/**
+ * @function
+ * Updates the selected byte on the statusbar.
+ * @param {Object} selection - The currently selected byte.
+ * @param {number} selection.b - The byte number.
+ * @param {boolean} selection.hex - Wether the the selected byte is on the hex editor (true) or the character map (false).
+ */
+PROMGRAMMER.updateStatusSelection = function(selection) {
+    $('#statusSelection').html('Byte: ' + PROMGRAMMER.decToHex(selection.b, 4, true) + ' (' + (selection.hex ? 'H' : 'C') + ')');
+};
+
+/**
+ * @function
+ * Sets the message on the statusbar.
+ * @param {string} message - The message to display.
+ */
+PROMGRAMMER.setStatusMessage = function(message) {
+    $('#statusMessage').html(message);
 };

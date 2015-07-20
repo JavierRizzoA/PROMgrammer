@@ -88,3 +88,18 @@ body {
     overflow-y: scroll;
     height: 518;
 }
+
+#statusbar {
+    background: #d3d3d3;
+    height: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#statusMessage {
+    float: left;
+}
+
+#statusSelection {
+    float:right;
+}

@@ -2,7 +2,7 @@
   <div class="row">
     <div id="toolbar"class="col-xs-2 col-md-1">
       <div class="btn-group-vertical btn-group-lg btn-block" role="group">
-        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="New hex file">
+        <button type="button" class="btn btn-default" data-toggle="tooltip" onclick="PROMGRAMMER.newFileButton();" data-placement="right" title="New hex file">
           <span class="glyphicon glyphicon-plus"></span>
         </button>
         <button type="button" class="btn btn-default" data-toggle="tooltip" onclick="PROMGRAMMER.saveFileButton();" data-placement="right" title="Save hex file">
@@ -33,7 +33,10 @@
       </div>
     </div>
   </div>
-  <div class="row" style="background: #d3d3d3; height: 20px;">
-    <p style="margin-bottom: 0; margin-left: 10px;">Statusbar</p>
+  <div id="statusbar" class="row">
+    <div id="statusMessage">
+    </div>
+    <div id="statusSelection">
+    </div>
   </div>
 </div>
