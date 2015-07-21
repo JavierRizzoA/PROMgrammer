@@ -21,6 +21,8 @@ PROMGRAMMER.selection = {b: 0, hex: true, charsEntered: 0};
 
 PROMGRAMMER.serialPort = require('serialport');
 
+PROMGRAMMER.communicationPort = null;
+
 PROMGRAMMER.ports = [];
 
 PROMGRAMMER.remote = require('remote');
@@ -28,6 +30,8 @@ PROMGRAMMER.remote = require('remote');
 PROMGRAMMER.dialog = PROMGRAMMER.remote.require('dialog');
 
 PROMGRAMMER.romTypes = ['28C64'];
+
+PROMGRAMMER.baudRates = [300, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200];
 
 /**
  * @function
@@ -150,6 +154,8 @@ $(window).load(function() {
     PROMGRAMMER.setStatusMessage('Welcome to PROMgrammer.');
     PROMGRAMMER.bytes = PROMGRAMMER.newFile(PROMGRAMMER.addresses);
     PROMGRAMMER.displayBytes(PROMGRAMMER.bytes, PROMGRAMMER.selection, PROMGRAMMER.addresses);
-    PROMGRAMMER.romTypes.forEach(function(rom) {$('<option>' + rom + '</option>').appendTo('#romTypeList')});
+    PROMGRAMMER.romTypes.forEach(function(rom) {$('<option>' + rom + '</option>').appendTo('#romTypeList');});
+    PROMGRAMMER.baudRates.forEach(function(baudRate) {$('<option>' + baudRate + '</option>').appendTo('#baudRateList');});
+    $('#baudRateList').val(9600);
     PROMGRAMMER.serialPort.list(PROMGRAMMER.listPorts);
 });
